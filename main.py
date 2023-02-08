@@ -12,17 +12,17 @@ def G_dt_pend(y):
 
 def L_dt_pend(y):
     alpha_l, C_I, B_c,n_3, y_lL = y
-    dydt = alpha_l/(1+(C_I/B_c)**n_3) - y_lL
+    dydt = alpha_l/(1+(C_I/B_c)**n_3) - y_l*L
     return dydt
 
 def C_dt_pend(y):
     alpha_c, Q_r, R,n_4, Y_cC = y
-    dydt = alpha_c/(1+(Q_r+R)**n_4) - Y_cC
+    dydt = alpha_c/(1+(Q_r+R)**n_4) - Y_c*C
     return dydt
 
 def Lm1_dt_pend(y):
     alpha_lM1, Q_r, R,n_5,y_lm1M1 = y
-    dydt = alpha_lM1/(1+(Q_r+R)**n_5) - y_lm1M1
+    dydt = alpha_lM1/(1+(Q_r+R)**n_5) - y_lm1*M1
     return dydt
 
 
