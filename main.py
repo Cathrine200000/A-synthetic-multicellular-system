@@ -7,7 +7,7 @@ def R(t):
 
 def G_dt_pend(y):
     alpha_g, LacI, B_l,n_1,LacIm1,B_l1,n_2,y_c, GFP = y
-    dydt = alpha_g/(1+(LacI/B_l)**n_1) + alpha_g/(1+(LacIm1/B_l1)**n_2) - y_c*GFP
+    dydt = alpha_g/(1+(LacI/B_l)**n_1) + alpha_g/(1+(LacIm1/B_l1)**n_2) - y_g*GFP
     return dydt
 
 def L_dt_pend(y):
@@ -16,8 +16,8 @@ def L_dt_pend(y):
     return dydt
 
 def C_dt_pend(y):
-    alpha_c, Q_r, R,n_4, Y_c, C = y
-    dydt = alpha_c/(1+(Q_r+R)**n_4) - Y_c*C
+    alpha_c, Q_r, R,n_4, y_c, C = y
+    dydt = alpha_c/(1+(Q_r+R)**n_4) - y_c*C
     return dydt
 
 def Lm1_dt_pend(y):
@@ -52,7 +52,7 @@ alpha_c= 0.01231
 Q_r= 0.12301
 R= 0.0123131
 n_4= 0.04241
-Y_cC= 0.0234241
+y_cC= 0.0234241
 alpha_lM1= 0.0234211
 n_5= 0.012311
 y_lm1M1= 0.05551
@@ -62,7 +62,7 @@ y0 = [np.pi - 0.1, 0.0,0,0]
 sol = odeint(equation_integration, y0, t, args=(alpha_g, 
                          B_l,n_1,B_l1,n_2,y_c,
                          alpha_l, B_c,n_3,y_lL, alpha_c,
-                         Q_r, R,n_4, Y_cC, alpha_lM1,n_5,y_lm1M1))
+                         Q_r, R,n_4, y_cC, alpha_lM1,n_5,y_lm1M1))
 
 
 import matplotlib.pyplot as plt
