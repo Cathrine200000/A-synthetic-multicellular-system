@@ -28,11 +28,11 @@ def Lm1_dt_pend(y):
 
 def equation_integration(y, t, alpha_g, B_l,n_1,B_l1,n_2,y_c,
                          alpha_l, B_c,n_3,y_lL, alpha_c,
-                         Q_r, R,n_4, Y_cC, alpha_lM1,n_5,y_lm1M1):
+                         Q_r, R,n_4, y_cC, alpha_lM1,n_5,y_lm1M1):
     GFP, LacI, C_I, LacIm1 = y
     return [G_dt_pend([alpha_g, LacI, B_l,n_1,LacIm1,B_l1,n_2,y_c, GFP]),
             L_dt_pend([alpha_l, C_I, B_c,n_3, y_lL]),
-            C_dt_pend([alpha_c, Q_r, R,n_4, Y_cC]),
+            C_dt_pend([alpha_c, Q_r, R,n_4, y_cC]),
             Lm1_dt_pend([alpha_lM1, Q_r, R,n_5,y_lm1M1])]
 
 t = np.linspace(0, 10, 101) 
