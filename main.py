@@ -33,7 +33,7 @@ def equation_integration(y, t, alpha_g, B_l, n_1, B_l1, n_2, y_c,
             Lm1_dt_pend(alpha_lM1, Q_r, R, n_5, y_l , M1)]
 
 t = np.linspace(0, 10, 101)
-y0 = [np.pi - 0.23421, 0.234241,0.3453452,0.022313]
+y0 = [np.pi - 0.23421, 0.234241, 0.3453452, 0.022313]
 
 Q_r = 0.0232312
 alpha_g = 0.34501
