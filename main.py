@@ -14,7 +14,7 @@ def L_dt_pend(alpha_L, C, B_c, n_3, y_l, L):
     return dydt
 
 def C_dt_pend(alpha_C, Q_r, R, n_4, y_c, C):
-    dydt = alpha_C / (1 + (Q_r + R) ** n_4) - y_c * C
+    dydt = alpha_C / (1 + (Q_r / R) ** n_4) - y_c * C
     return dydt
 
 def Lm1_dt_pend(alpha_Lm1, Q_r, R, n_5, y_l, Lm1):
