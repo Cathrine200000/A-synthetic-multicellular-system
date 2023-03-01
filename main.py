@@ -18,7 +18,7 @@ def C_dt_pend(alpha_C, Q_r, R, n_4, y_c, C):
     return dydt
 
 def Lm1_dt_pend(alpha_Lm1, Q_r, R, n_5, y_l, Lm1):
-    dydt = alpha_Lm1 / (1 + (Q_r + R) ** n_5) - y_l * Lm1
+    dydt = alpha_Lm1 / (1 + (Q_r / R) ** n_5) - y_l * Lm1
     return dydt
 
 def equation_integration(y, t, alpha_G, B_l, n_1, B_l1, n_2, y_c,
