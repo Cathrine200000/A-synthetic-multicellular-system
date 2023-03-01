@@ -61,10 +61,10 @@ sol = odeint(equation_integration, y0, t, args=(alpha_G, B_l, n_1, B_l1, n_2, y_
                          Q_r, R, n_4, alpha_Lm1, n_5, y_g))
 
 
-plt.plot(t, sol[:, 0], 'b', label = 'LacIm1 and LacI repress GFP')
-plt.plot(t, sol[:, 1], 'g', label = 'CI represses LacI')
-plt.plot(t, sol[:, 2], 'r', label = 'LuxR activates the CI gene')
-plt.plot(t, sol[:, 3], 'y', label = 'LuxR activates the LacIm1 gene')
+plt.plot(t, sol[:, 0], 'b', label = 'GFP')
+plt.plot(t, sol[:, 1], 'g', label = 'LacI')
+plt.plot(t, sol[:, 2], 'r', label = 'CI')
+plt.plot(t, sol[:, 3], 'y', label = 'LacIm1')
 plt.legend(bbox_to_anchor = (0.6, 1))
 plt.xlabel('Time')
 plt.ylabel('Concentration')
