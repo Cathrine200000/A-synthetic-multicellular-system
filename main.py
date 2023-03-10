@@ -1,4 +1,3 @@
-
 import matplotlib
 from matplotlib import rc  # для вывода русских букв
  
@@ -68,7 +67,7 @@ sol = odeint(equation_integration, y0, t, args=(alpha_G, B_l, n_1, B_l1, n_2, y_
                          alpha_L, B_c, n_3, y_l, alpha_C,
                          Q_r, R, n_4, alpha_Lm1, n_5, y_g))
 
-plt.figure(figsize=(5, 5),  dpi=200)
+plt.figure(figsize=(6, 5),  dpi=150)
 plt.plot(t, sol[:, 0], 'b', label = 'GFP')
 plt.plot(t, sol[:, 1], 'g', label = 'LacI')
 plt.plot(t, sol[:, 2], 'r', label = 'CI')
