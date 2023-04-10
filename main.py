@@ -13,15 +13,15 @@ def R(t):
     return t / 100
 
 def G_dt_pend(alpha_G, L, B_l, n_1, Lm1, B_l1, n_2, y_g, GFP):
-    dydt = alpha_G / (1 + (L / B_l)  n_1) + alpha_G / (1 + (Lm1 / B_l1)  n_2) - y_g * GFP
+    dydt = alpha_G / (1 + (L / B_l) * n_1) + alpha_G / (1 + (Lm1 / B_l1) * n_2) - y_g * GFP
     return dydt
 
 def L_dt_pend(alpha_L, C, B_c, n_3, y_l, L):
-    dydt = alpha_L / (1 + (C / B_c)  n_3) - y_l * L
+    dydt = alpha_L / (1 + (C / B_c) * n_3) - y_l * L
     return dydt
 
 def C_dt_pend(alpha_C, Q_r, R, n_4, y_c, C):
-    dydt = alpha_C / (1 + (Q_r / R)  n_4) - y_c * C
+    dydt = alpha_C / (1 + (Q_r / R) * n_4) - y_c * C
     return dydt
 
 def Lm1_dt_pend(alpha_Lm1, Q_r, R, n_5, y_l, Lm1):
