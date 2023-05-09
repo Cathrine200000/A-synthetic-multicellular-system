@@ -1,3 +1,4 @@
+
 from matplotlib import rc  # для вывода русских букв
  
 font = {'family': 'Verdana', # для вывода русских букв
@@ -41,7 +42,7 @@ def equation_integration(y, t, alpha_G, B_l, n_1, B_l1, n_2, y_c,
             Lm1_dt_pend(alpha_Lm1, Q_r, R, n_5, y_l , Lm1),
             R_dt(P_r, Lux_R, A, y_R, R)]
 
-t = np.linspace(0, 10, 100)
+tt = np.linspace(0, 10, 100)
 GFP = 0
 L = 0
 C = 1
@@ -70,9 +71,9 @@ y_l = 0.018             #в min^-1 из статьи
 n_5 = 1                 #из статьи 
 alpha_Lm1 = 2           #не из статьи
 y_g = 0.404             #в min^-1 из статьи
-sol = odeint(equation_integration, y0, t, args=(alpha_G, B_l, n_1, B_l1, n_2, y_c,
-                         alpha_L, B_c, n_3, y_l, alpha_C,
-                         Q_r, R, n_4, alpha_Lm1, n_5, y_g, P_r, Lux_R, y_R))
+#sol = odeint(equation_integration, y0, t, args=(alpha_G, B_l, n_1, B_l1, n_2, y_c,
+#                         alpha_L, B_c, n_3, y_l, alpha_C,
+#                         Q_r, R, n_4, alpha_Lm1, n_5, y_g, P_r, Lux_R, y_R))
 
 
 def IsMaxMin(min, max, el):
@@ -83,73 +84,77 @@ def IsMaxMin(min, max, el):
     return [min, max]
 
 
-def Function(dt, x, y, t_i):
+def Function(  dt, y0, n, t):
     min = 0.0
     max = 0.0
-    itr = len(x)
-    Matrix = np.zeros((len(x), y, t_i)) #ищем количество узлов в сетке, n - количество узлов в плоскости, itr - количество матриц
-    for y0 in range(0,itr):
-        sol = odeint(equation_integration, x[y0], t, args=(alpha_G, B_l, n_1, B_l1, n_2, y_c,
-                         alpha_L, B_c, n_3, y_l, alpha_C,
-                         Q_r, R, n_4, alpha_Lm1, n_5, y_g, P_r, Lux_R, y_R))
-        for j in range(0, 4):
-            for k in range(0, 100):
-                Matrix[y0][j][k] = sol[k][j]
-
-    for i in range(1, itr):
+    Matrix = np.zeros((n,   len(y0), t)) #ищем количество узлов в сетке, n - количество узлов в плоскости, itr - количество матриц
+    #for i in range(0, n): #заполнение матрицы и проверка на то, что не выходим за границы
+    #    for j in range(0, n):
+    #        Matrix[0][i][j] = StartMatrix[i][j]
+    #        min = IsMaxMin(min, max, Matrix[0][i][j])[0]
+    #        max = IsMaxMin(min, max, Matrix[0][i][j])[1]
+    yc=y0
+    for i in range(1, n):
         Matrix[i][0][0] = Matrix[i - 1][0][0] + dt * (Matrix[i - 1][1][0] + Matrix[i - 1][0][1] -
                                                       2 * Matrix[i - 1][0][0])
         min = IsMaxMin(min, max, Matrix[i][0][0])[0]
         max = IsMaxMin(min, max, Matrix[i][0][0])[1]
-        Matrix[i][y - 1][t_i - 1] = Matrix[i - 1][y - 1][t_i - 1] + dt * (Matrix[i - 1][y - 2][t_i - 1]
-                                                                      + Matrix[i - 1][y - 1][t_i - 2] - 2 *
-                                                                      Matrix[i - 1][y - 1][t_i - 1])
-        min = IsMaxMin(min, max, Matrix[i][y - 1][t_i - 1])[0]
-        max = IsMaxMin(min, max, Matrix[i][y - 1][t_i - 1])[1]
-        Matrix[i][0][t_i - 1] = Matrix[i - 1][0][y - 1] + dt * (Matrix[i - 1][1][y - 1] + Matrix[i - 1][0][t_i - 2]
-                                                              - 2 * Matrix[i - 1][0][t_i - 1])
-        min = IsMaxMin(min, max, Matrix[i][0][t_i - 1])[0]
-        max = IsMaxMin(min, max, Matrix[i][0][t_i - 1])[1]
-        Matrix[i][y - 1][0] = Matrix[i - 1][y - 1][0] + dt * (Matrix[i - 1][y - 2][0] + Matrix[i - 1][y - 1][1]
-                                                              - 2 * Matrix[i - 1][y - 1][0])
-        min = IsMaxMin(min, max, Matrix[i][y - 1][0])[0]
-        max = IsMaxMin(min, max, Matrix[i][y - 1][0])[1]
-        for j in range(1, t_i - 1):
+        Matrix[i][n - 1][n - 1] = Matrix[i - 1][n - 1][n - 1] + dt * (Matrix[i - 1][n - 2][n - 1]
+                                                                      + Matrix[i - 1][n - 1][n - 2] - 2 *
+                                                                      Matrix[i - 1][n - 1][n - 1])
+        min = IsMaxMin(min, max, Matrix[i][n - 1][n - 1])[0]
+        max = IsMaxMin(min, max, Matrix[i][n - 1][n - 1])[1]
+        Matrix[i][0][n - 1] = Matrix[i - 1][0][n - 1] + dt * (Matrix[i - 1][1][n - 1] + Matrix[i - 1][0][n - 2]
+                                                              - 2 * Matrix[i - 1][0][n - 1])
+        min = IsMaxMin(min, max, Matrix[i][0][n - 1])[0]
+        max = IsMaxMin(min, max, Matrix[i][0][n - 1])[1]
+        Matrix[i][n - 1][0] = Matrix[i - 1][n - 1][0] + dt * (Matrix[i - 1][n - 2][0] + Matrix[i - 1][n - 1][1]
+                                                              - 2 * Matrix[i - 1][n - 1][0])
+        min = IsMaxMin(min, max, Matrix[i][n - 1][0])[0]
+        max = IsMaxMin(min, max, Matrix[i][n - 1][0])[1]
+        for j in range(1, n - 1):
             Matrix[i][0][j] = Matrix[i - 1][0][j] + dt * (Matrix[i - 1][1][j] + Matrix[i - 1][0][j + 1]
                                                           + Matrix[i - 1][0][j - 1] - 3 * Matrix[i - 1][0][j])
             min = IsMaxMin(min, max, Matrix[i][0][j])[0]
             max = IsMaxMin(min, max, Matrix[i][0][j])[1]
-        for j in range(1, y - 1):
+        for j in range(1, n - 1):
             Matrix[i][j][0] = Matrix[i - 1][j][0] + dt * (Matrix[i - 1][j][1] + Matrix[i - 1][j + 1][0]
                                                           + Matrix[i - 1][j - 1][0] - 3 * Matrix[i - 1][j][0])
             min = IsMaxMin(min, max, Matrix[i][j][0])[0]
             max = IsMaxMin(min, max, Matrix[i][j][0])[1]
-        for j in range(1, t_i - 1):
-            Matrix[i][y - 1][j] = Matrix[i - 1][y - 1][j] + dt * (Matrix[i - 1][y - 2][j] + Matrix[i - 1][y - 1][j + 1]
-                                                                  + Matrix[i - 1][y - 1][j - 1] - 3 *
-                                                                  Matrix[i - 1][y - 1][j])
-            min = IsMaxMin(min, max, Matrix[i][y - 1][j])[0]
-            max = IsMaxMin(min, max, Matrix[i][y - 1][j])[1]
-        for j in range(1, y - 1):
-            Matrix[i][j][t_i - 1] = Matrix[i - 1][j][t_i - 1] + dt * (Matrix[i - 1][j][t_i - 2] + Matrix[i - 1][j + 1][t_i - 1]
-                                                                  + Matrix[i - 1][j - 1][t_i - 1] - 3 * Matrix[i - 1][j][
-                                                                      t_i - 1])
-            min = IsMaxMin(min, max, Matrix[i][j][t_i - 1])[0]
-            max = IsMaxMin(min, max, Matrix[i][j][t_i - 1])[1]
-        for j in range(1, y - 1):
-            for k in range(1, t_i - 1):
+        for j in range(1, n - 1):
+            Matrix[i][n - 1][j] = Matrix[i - 1][n - 1][j] + dt * (Matrix[i - 1][n - 2][j] + Matrix[i - 1][n - 1][j + 1]
+                                                                  + Matrix[i - 1][n - 1][j - 1] - 3 *
+                                                                  Matrix[i - 1][n - 1][j])
+            min = IsMaxMin(min, max, Matrix[i][n - 1][j])[0]
+            max = IsMaxMin(min, max, Matrix[i][n - 1][j])[1]
+        for j in range(1, n - 1):
+            Matrix[i][j][n - 1] = Matrix[i - 1][j][n - 1] + dt * (Matrix[i - 1][j][n - 2] + Matrix[i - 1][j + 1][n - 1]
+                                                                  + Matrix[i - 1][j - 1][n - 1] - 3 * Matrix[i - 1][j][
+                                                                      n - 1])
+            min = IsMaxMin(min, max, Matrix[i][j][n - 1])[0]
+            max = IsMaxMin(min, max, Matrix[i][j][n - 1])[1]
+
+        sol = odeint(equation_integration, yc, tt , args=(alpha_G, B_l, n_1, B_l1, n_2, y_c,
+                             alpha_L, B_c, n_3, y_l, alpha_C,
+                             Q_r, R, n_4, alpha_Lm1, n_5, y_g, P_r, Lux_R, y_R))
+        for j in range(0, len(y0)):
+            for k in range(0, t):
+                Matrix[i][j][k] = sol[k][j]
+        for j in range(1, len(y0)-1):
+            for k in range(1, t-1):
                 Matrix[i][j][k] = Matrix[i - 1][j][k] + dt * (Matrix[i - 1][j - 1][k] + Matrix[i - 1][j + 1][k]
                                                               + Matrix[i - 1][j][k + 1] + Matrix[i - 1][j][k - 1] - 4 *
                                                               Matrix[i - 1][j][k])
                 min = IsMaxMin(min, max, Matrix[i][j][k])[0]
                 max = IsMaxMin(min, max, Matrix[i][j][k])[1]
+            yc =  [Matrix[i][j][0], Matrix[i][j][1], Matrix[i][j][2], Matrix[i][j][3],Matrix[i][j][4]]
     return Matrix, min, max
 
 
 dt = 0.1
 
-x = [[GFP, L, C, Lm1, A],[GFP+1, L+1, C+1, Lm1+1, A+1]]
-result, mincol, maxcol = Function(dt, x, 5, 100)
+result, mincol, maxcol = Function(dt, y0, 2, 100)
 print(mincol)
 print(maxcol)
 
